@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "211569834455",
+    "project_id": "bemestardata",
+    "storage_bucket": "bemestardata.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211569834455:android:5650044e628f2bec987392",
+        "android_client_info": {
+          "package_name": "br.com.claudiodev.bemestarcem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "211569834455-fp5klh78hcep2gvq489iidl7uicq0klh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9Z6xfrjVmOGHtyNm_aXnJ4xKetlTsRCo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "211569834455-fp5klh78hcep2gvq489iidl7uicq0klh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
