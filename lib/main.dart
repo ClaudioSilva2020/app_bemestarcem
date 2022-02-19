@@ -1,5 +1,6 @@
 import 'package:bemestarcem/models/user_manager.dart';
 import 'package:bemestarcem/screens/base/base_screen.dart';
+import 'package:bemestarcem/screens/signup/signup_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ Future <void> main() async {
 class MyApp extends StatelessWidget {
 
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -33,7 +35,21 @@ class MyApp extends StatelessWidget {
           ),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: BaseScreen(),
+        initialRoute: '/base',
+        onGenerateRoute: (settings){
+          switch(settings.name){
+            case '/signup':
+              return MaterialPageRoute(
+                  builder: (_) => SignUpScreen()
+              );
+            case '/base':
+            default:
+              return MaterialPageRoute(
+                  builder: (_) => BaseScreen()
+              );
+          }
+        },
+
       ),
     );
   }

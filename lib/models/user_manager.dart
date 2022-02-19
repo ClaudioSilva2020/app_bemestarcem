@@ -41,6 +41,23 @@ class UserManager extends ChangeNotifier{
     loading = false;
   }
 
+  Future<void> signUp({required AppUser user, required Function onFail,
+    required Function onSucess}) async {
+    loading = true;
+    try {
+      final UserCredential credential = await auth
+          .createUserWithEmailAndPassword(
+          email: user.email, password: user.password);
+      this.user = credential.user;
+
+      onSucess();
+
+    } on PlatformException catch (e){
+      onFail (getErrorString(e.code));
+    }
+    loading = false;
+  }
+
 
   Future<void> _loadCurrentUser() async {
     final User currentUser = await auth.currentUser;

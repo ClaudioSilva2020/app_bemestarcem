@@ -1,5 +1,6 @@
 import 'package:bemestarcem/models/user.dart';
 import 'package:bemestarcem/models/user_manager.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:bemestarcem/helpers/validators.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,6 +22,20 @@ class LoginScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Entrar'),
         centerTitle: true,
+        actions: <Widget> [
+          TextButton(
+              onPressed: (){
+                Navigator.of(context).pushReplacementNamed('/signup');
+              },
+              style: TextButton.styleFrom(
+                primary: Colors.white,
+              ),
+              child: const Text(
+                'CRIAR CONTA',
+                style: TextStyle(fontSize: 14),
+              )
+          )
+        ],
       ),
       body: Center(
         child: Card(
