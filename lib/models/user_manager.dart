@@ -7,23 +7,47 @@ import 'package:flutter/services.dart';
 
 class UserManager extends ChangeNotifier{
 
-  final FirebaseAuth  auth = FirebaseAuth.instance;
-  bool loading = false;
+  UserManager(){
+    _loadCurrentUser();
+  }
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  User? user = null; // O ? é porque o user é null.
+
+  bool _loading = false;
+  bool get loading => _loading;
+  set loading(bool value){
+    _loading = value;
+    notifyListeners();
+  }
+
+  bool get isLoggedId => user !=null;
+
+
   Future<void> signIn({required AppUser user, required Function onFail,
     required Function onSuccess}) async {
-    setLoading(true);
+    loading = true;
     try{
       final UserCredential credential = await auth.signInWithEmailAndPassword(
           email: user.email, password: user.password);
+
+      this.user = credential.user;
 
       onSuccess();
     } on PlatformException catch (e){
       onFail(getErrorString(e.code));
     }
-    setLoading(false);
+    loading = false;
   }
-  void setLoading(bool value){
-    loading = value;
+
+
+  Future<void> _loadCurrentUser() async {
+    final User currentUser = await auth.currentUser;
+    if(currentUser != null){
+      user = currentUser;
+      print("User UID: " + user!.uid); //O caractere ! serve para usar var null
+    }
     notifyListeners();
   }
 
