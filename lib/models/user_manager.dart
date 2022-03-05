@@ -1,6 +1,8 @@
 import 'package:bemestarcem/helpers/firebase_erros.dart';
 import 'package:bemestarcem/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
@@ -8,12 +10,15 @@ import 'package:flutter/services.dart';
 class UserManager extends ChangeNotifier{
 
   UserManager(){
-    _loadCurrentUser();
+    _loadCurrentUser(null!);
   }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore app_firestore = FirebaseFirestore.instance;
 
-  User? user = null; // O ? é porque o user é null.
+  // User? user = null; // O ? é porque o user é null.
+
+  AppUser user;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -32,7 +37,8 @@ class UserManager extends ChangeNotifier{
       final UserCredential credential = await auth.signInWithEmailAndPassword(
           email: user.email, password: user.password);
 
-      this.user = credential.user;
+      await _loadCurrentUser(firebaseUser: credential.user);
+
 
       onSuccess();
     } on PlatformException catch (e){
@@ -48,7 +54,11 @@ class UserManager extends ChangeNotifier{
       final UserCredential credential = await auth
           .createUserWithEmailAndPassword(
           email: user.email, password: user.password);
-      this.user = credential.user;
+      // this.user = credential.user;
+
+      user.id = credential.user.uid;
+      this.user = user;
+      await user.saveData();
 
       onSucess();
 
@@ -59,13 +69,14 @@ class UserManager extends ChangeNotifier{
   }
 
 
-  Future<void> _loadCurrentUser() async {
-    final User currentUser = await auth.currentUser;
+  Future<void> _loadCurrentUser(User firebaseUser) async {
+    final User currentUser = firebaseUser ?? await auth.currentUser;
     if(currentUser != null){
-      user = currentUser;
-      print("User UID: " + user!.uid); //O caractere ! serve para usar var null
+      final DocumentSnapshot docUser = await app_firestore.collection('users')
+          .doc(currentUser.uid).get();
+      user = AppUser.fromDocument(docUser);
+      notifyListeners();
     }
-    notifyListeners();
   }
 
 }
