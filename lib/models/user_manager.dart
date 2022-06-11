@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 class UserManager extends ChangeNotifier{
 
   UserManager(){
-    _loadCurrentUser(null!);
+    _loadCurrentUser();
   }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -18,10 +18,18 @@ class UserManager extends ChangeNotifier{
 
   // User? user = null; // O ? é porque o user é null.
 
-  AppUser user;
+  AppUser? user;
 
   bool _loading = false;
   bool get loading => _loading;
+  bool get isLoggedIn => user != null; // Retorna se o usuário está logado.
+
+  void signOut(){
+    auth.signOut();
+    user = null;
+    notifyListeners();
+  }
+
   set loading(bool value){
     _loading = value;
     notifyListeners();
@@ -69,7 +77,7 @@ class UserManager extends ChangeNotifier{
   }
 
 
-  Future<void> _loadCurrentUser(User firebaseUser) async {
+  Future<void> _loadCurrentUser({User? firebaseUser}) async {
     final User currentUser = firebaseUser ?? await auth.currentUser;
     if(currentUser != null){
       final DocumentSnapshot docUser = await app_firestore.collection('users')

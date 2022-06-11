@@ -102,12 +102,16 @@ class LoginScreen extends StatelessWidget {
                                   );
                                 },
                                 onSuccess: () {
-                                  //  TODO: fechar tela de login
+                                  Navigator.of(context).pop();
                                 }
                             );
                           }
                         },
-                        child: const Text(
+                        child: userManager.loading ?
+                        const CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(Colors.white),
+                        )
+                            :const Text(
                           'Entrar',
                           style: TextStyle(
                               fontSize: 18
