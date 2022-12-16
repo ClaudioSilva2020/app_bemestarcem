@@ -1,6 +1,10 @@
 import 'package:bemestarcem/common/custom_drawer/custom_drawer.dart';
 import 'package:bemestarcem/models/page_manager.dart';
+import 'package:bemestarcem/screens/home/home_screen.dart';
 import 'package:bemestarcem/screens/login/login_screen.dart';
+import 'package:bemestarcem/screens/products/products_screen.dart';
+import 'package:bemestarcem/screens/requests/requests_screen.dart';
+import 'package:bemestarcem/screens/store/store_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,25 +20,10 @@ class BaseScreen extends StatelessWidget {
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
-          Scaffold(
-            drawer: CustomDrawer(),
-            appBar: AppBar(
-              title: const Text('Bem Estar'),
-            ),
-          ),
-          LoginScreen(),
-          Scaffold(
-            drawer: CustomDrawer(),
-            appBar: AppBar(
-              title: const Text('Bem Estar'),
-            ),
-          ),
-          Scaffold(
-            drawer: CustomDrawer(),
-            appBar: AppBar(
-              title: const Text('Bem Estar'),
-            ),
-          ),
+          HomeScreen(),
+          ProductsScreen(),
+          RequestsScreen(),
+          StoreScreen(),
           Container(color: Colors.blue,),
           Container(color: Colors.white,),
           Container(color: Colors.blueAccent,),

@@ -1,6 +1,9 @@
+import 'package:bemestarcem/models/product.dart';
+import 'package:bemestarcem/models/product_manager.dart';
 import 'package:bemestarcem/models/user_manager.dart';
 import 'package:bemestarcem/screens/base/base_screen.dart';
 import 'package:bemestarcem/screens/login/login_screen.dart';
+import 'package:bemestarcem/screens/product/product_screen.dart';
 import 'package:bemestarcem/screens/signup/signup_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,9 +26,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => UserManager(),
-      lazy: false,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserManager(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ProductManager(),
+          lazy: false,
+        )
+      ],
       child: MaterialApp(
         title: 'Bem Estar',
         debugShowCheckedModeBanner: false,
@@ -47,6 +58,12 @@ class MyApp extends StatelessWidget {
             case '/signup':
               return MaterialPageRoute(
                   builder: (_) => SignUpScreen()
+              );
+            case '/product':
+              return MaterialPageRoute(
+                  builder: (_) => ProductScreen(
+                    settings.arguments as Product
+                  )
               );
             case '/base':
             default:

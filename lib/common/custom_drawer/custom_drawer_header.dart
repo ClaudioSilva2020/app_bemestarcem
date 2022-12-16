@@ -15,9 +15,9 @@ class CustomDrawerHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Text(
-                'Bem estar\n Colchões',
+                'Bem estar',
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 35,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -26,7 +26,7 @@ class CustomDrawerHeader extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -44,7 +44,7 @@ class CustomDrawerHeader extends StatelessWidget {
                       : 'Entre ou cadastre-se',
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
