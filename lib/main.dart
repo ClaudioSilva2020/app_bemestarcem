@@ -1,39 +1,46 @@
+import 'package:bemestarcem/models/cart_manager.dart';
+import 'package:bemestarcem/models/product_manager.dart';
 import 'package:bemestarcem/models/user_manager.dart';
-import 'package:bemestarcem/screens/base/base_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:bemestarcem/screens/splash_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
-Future <void> main() async {
-
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await initializeDateFormatting('pt_BR', null);
   runApp(MyApp());
-  // // Firestore.instance.collection('teste').add({'teste': 'teste'});
-  // FirebaseFirestore.instance.collection('pedidos').doc('mesa').set({'status': 'entrege'});
-
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => UserManager(),
-      child: MaterialApp(
-        title: 'Bem Estar',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryColor: Colors.blue,
-          scaffoldBackgroundColor: Colors.blue,
-          appBarTheme: const AppBarTheme(
-            elevation: 0
-          ),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserManager(), lazy: false),
+        ChangeNotifierProvider(create: (_) => ProductManager(), lazy: false),
+        ChangeNotifierProxyProvider2<UserManager, ProductManager, CartManager>(
+          create: (_) => CartManager(),
+          lazy: false,
+          update: (_, userManager, productManager, cartManager) =>
+              cartManager!..updateUser(userManager, productManager.allProducts),
         ),
-        home: BaseScreen(),
+      ],
+      child: MaterialApp(
+        title: 'Bem Estar Cem',
+        debugShowCheckedModeBanner: false,
+        locale: const Locale('pt', 'BR'),
+        theme: ThemeData(
+          brightness: Brightness.light,
+          canvasColor: Colors.transparent,
+          primarySwatch: Colors.blue,
+          fontFamily: "Montserrat",
+        ),
+        home: SplashScreen(),
       ),
     );
   }
